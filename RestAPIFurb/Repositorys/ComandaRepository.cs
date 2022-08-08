@@ -12,6 +12,7 @@ namespace RestAPIFurb.Repositorys
         {
             _context = context;
         }
+
         public void Delete(Comanda comanda)
         {
             _context.comandas.Remove(comanda);

@@ -4,8 +4,9 @@ namespace RestAPIFurb.Repositorys.Interfaces
 {
     public interface IProdutoRepository
     {
-        List<Produto> Get();
+        object Get();
         Produto GetByID(int id);
+        public object GetJsonByID(int id);
         void Insert(Produto produto);
         void Delete(Produto produto);
         void Save();

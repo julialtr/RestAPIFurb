@@ -24,7 +24,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("produtos")]
-        public ActionResult<List<Produto>> GetProdutos()
+        public ActionResult<object> GetProdutos()
         {
             try
             {
@@ -41,16 +41,16 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("produtos/{id}")]
-        public ActionResult<Produto> GetProduto(int id)
+        public ActionResult<object> GetProduto(int id)
         {
             try
             {
-                var produtoBD = _produtoRepository.GetByID(id);
+                var retornoJson = _produtoRepository.GetJsonByID(id);
 
-                if (produtoBD == null)
+                if (retornoJson == null)
                     return NotFound("Produto não encontrado.");
 
-                return Ok(produtoBD);
+                return Ok(retornoJson);
             }
             catch (Exception)
             {
@@ -63,7 +63,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpPost]
         [Route("produtos")]
-        public ActionResult<Produto> PostProduto(ProdutoDto produtoDto)
+        public ActionResult<object> PostProduto(ProdutoDto produtoDto)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace RestAPIFurb.Controllers
                 _produtoRepository.Insert(produtoDB);
                 _produtoRepository.Save();
 
-                return Ok(produtoDB);
+                return Ok(_produtoRepository.GetJsonByID(produtoDB.Id));
             }
             catch (Exception)
             {

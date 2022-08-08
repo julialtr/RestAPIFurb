@@ -24,7 +24,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("usuarios")]
-        public ActionResult<List<Usuario>> GetUsuarios()
+        public ActionResult<object> GetUsuarios()
         {
             try
             {
@@ -41,16 +41,16 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("usuarios/{id}")]
-        public ActionResult<Usuario> GetUsuario(int id)
+        public ActionResult<object> GetUsuario(int id)
         {
             try
             {
-                var usuarioBD = _usuarioRepository.GetByID(id);
+                var retornoJson = _usuarioRepository.GetJsonByID(id);
 
-                if (usuarioBD == null)
+                if (retornoJson == null)
                     return NotFound("Usuário não encontrado.");
 
-                return Ok(usuarioBD);
+                return Ok(retornoJson);
             }
             catch (Exception)
             {
@@ -63,7 +63,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpPost]
         [Route("usuarios")]
-        public ActionResult<Usuario> PostUsuario(UsuarioDto usuarioDto)
+        public ActionResult<object> PostUsuario(UsuarioDto usuarioDto)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace RestAPIFurb.Controllers
                 _usuarioRepository.Insert(usuarioDB);
                 _usuarioRepository.Save();
 
-                return Ok(usuarioDB);
+                return Ok(_usuarioRepository.GetJsonByID(usuarioDB.Id));
             }
             catch (Exception)
             {

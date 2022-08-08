@@ -17,14 +17,32 @@ namespace RestAPIFurb.Repositorys
             _context.usuarios.Remove(usuario);
         }
 
-        public List<Usuario> Get()
+        public object Get()
         {
-            return _context.usuarios.ToList();
+            return from usuario in _context.usuarios
+                   select new
+                   {
+                       id = usuario.Id,
+                       nome = usuario.Nome,
+                       telefone = usuario.Telefone,
+                   };
         }
 
         public Usuario GetByID(int id)
         {
             return _context.usuarios.Find(id);
+        }
+
+        public object GetJsonByID(int id)
+        {
+            return (from usuario in _context.usuarios
+                   where usuario.Id == id
+                   select new
+                   {
+                       id = usuario.Id,
+                       nome = usuario.Nome,
+                       telefone = usuario.Telefone,
+                   }).FirstOrDefault();
         }
 
         public void Insert(Usuario usuario)

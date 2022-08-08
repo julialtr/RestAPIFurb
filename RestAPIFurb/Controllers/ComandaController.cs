@@ -28,7 +28,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("comandas")]
-        public ActionResult GetComandas()
+        public ActionResult<object> GetComandas()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpGet]
         [Route("comandas/{id}")]
-        public ActionResult GetComanda(int id)
+        public ActionResult<object> GetComanda(int id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace RestAPIFurb.Controllers
         /// </summary>
         [HttpPost]
         [Route("comandas")]
-        public ActionResult PostComanda(ComandaDto comandaDto)
+        public ActionResult<object> PostComanda(ComandaDto comandaDto)
         {
             try
             {
@@ -131,7 +131,9 @@ namespace RestAPIFurb.Controllers
                     comandaDB.UsuarioId = comandaDto.IdUsuario;
                 }
 
-                if (comandaDto.Produtos.Count != 0)
+                bool produtoVazio = comandaDto.Produtos.Count == 1 && comandaDto.Produtos[0] == 0;
+
+                if (comandaDto.Produtos.Count != 0 && !produtoVazio)
                 {
                     comandaDB.Produtos = new List<ComandaProduto>();
 

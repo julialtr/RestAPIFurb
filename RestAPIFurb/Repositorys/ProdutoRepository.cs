@@ -17,14 +17,33 @@ namespace RestAPIFurb.Repositorys
             _context.produtos.Remove(produto);
         }
 
-        public List<Produto> Get()
+        public object Get()
         {
-            return _context.produtos.ToList();
+            return from produto in _context.produtos
+                   select new
+                   {
+                       id = produto.Id,
+                       nome = produto.Nome,
+                       preco = produto.Preco,
+                   };
         }
+
 
         public Produto GetByID(int id)
         {
             return _context.produtos.Find(id);
+        }
+
+        public object GetJsonByID(int id)
+        {
+            return (from produto in _context.produtos
+                    where produto.Id == id
+                    select new
+                    {
+                        id = produto.Id,
+                        nome = produto.Nome,
+                        preco = produto.Preco,
+                    }).FirstOrDefault();
         }
 
         public void Insert(Produto produto)
